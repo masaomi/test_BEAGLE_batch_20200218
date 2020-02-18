@@ -1,0 +1,15 @@
+# 20200218 masa
+module load Variants/Beagle/5.1
+java -jar $Beagle_jar gt=data/Run1AB.sa0020.vcf.gz out=beagle_out nthreads=8
+
+module load Tools/vcftools/0.1.16
+vcf-stats data/Run1AB.sa0020.vcf.gz -p vcf_stats_before_beagle/
+vcf-stats beagle_out.vcf.gz -p vcf_stats_after_beagle/
+
+module load Dev/Ruby/2.7.0
+ruby BEAGLE_batch.rb data/ out_BEAGLE > BEAGLE_batch.sh
+
+module load Dev/Python/3.6.8
+python BEAGLE_batch.py
+
+bash BEAGLE_batch.bash
